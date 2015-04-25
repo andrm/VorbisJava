@@ -93,7 +93,7 @@ public class OggPage {
         if(packet.isEndOfStream()) {
             isEOS = true;
         }
-
+        
         // Add on in 255 byte chunks
         int size = packet.getData().length;
         for(int i = numLVs; i< 255; i++) {
@@ -112,7 +112,6 @@ public class OggPage {
                 break;
             }
         }
-
         return offset;
     }
 
@@ -232,6 +231,10 @@ public class OggPage {
      */
     protected void setIsEOS() {
         isEOS = true;
+    }
+    
+    protected boolean isEOS() {
+        return isEOS;
     }
 
     /**
