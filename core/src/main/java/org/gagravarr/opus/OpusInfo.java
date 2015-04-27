@@ -160,4 +160,19 @@ public class OpusInfo extends HighLevelOggStreamPacket implements OpusPacket, Og
     public byte[] getChannelMapping() {
         return channelMapping;
     }
+
+    public int getFrames() {
+       
+        return 0;
+    }
+
+    public int getSamples() {
+        
+        return 0;
+    }
+
+    public long getGranulePosition() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 }

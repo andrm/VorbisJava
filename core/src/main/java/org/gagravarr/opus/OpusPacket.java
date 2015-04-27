@@ -24,4 +24,9 @@ public interface OpusPacket extends OggStreamPacket {
    public static final String MAGIC_TAGS_STR = "OpusTags";
    public static final byte[] MAGIC_HEADER_BYTES = IOUtils.toUTF8Bytes(MAGIC_HEADER_STR);
    public static final byte[] MAGIC_TAGS_BYTES   = IOUtils.toUTF8Bytes(MAGIC_TAGS_STR);
+   
+   public int getFrames();
+   public int getSamples();
+   
+   public long getGranulePosition();
 }

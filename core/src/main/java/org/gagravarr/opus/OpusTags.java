@@ -64,4 +64,16 @@ public class OpusTags extends VorbisStyleComments implements OpusPacket, OggAudi
    protected void populateMetadataFooter(OutputStream out) {
        // No footer needed on Opus Tag Packets
    }
+public int getFrames() {
+   
+    return 0;
+}
+public int getSamples() {
+   
+    return 0;
+}
+public long getGranulePosition() {
+    // TODO Auto-generated method stub
+    return 0;
+}
 }
