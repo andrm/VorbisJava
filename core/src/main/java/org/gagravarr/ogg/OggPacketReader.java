@@ -131,7 +131,7 @@ public class OggPacketReader {
             
         }
       
-        System.err.println("Next page:"+page.getSequenceNumber()+" gp:"+page.getGranulePosition()+ " packetCount:"+packetCount+ " isCont:"+isCont);
+        //System.err.println("Next page:"+page.getSequenceNumber()+" gp:"+page.getGranulePosition()+ " packetCount:"+packetCount+ " isCont:"+isCont);
         it = page.getPacketIterator(leftOver);
         
         

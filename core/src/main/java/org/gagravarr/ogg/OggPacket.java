@@ -22,16 +22,22 @@ public class OggPacket extends OggPacketData {
     private OggPage parent; // Last page if split
     private boolean bos;
     private boolean eos;
+    private boolean spanning;
 
     /**
      * Creates a new Ogg Packet based on data read
      *  from within an Ogg Page.
      */
-    protected OggPacket(OggPage parent, byte[] data, boolean bos, boolean eos) {
+    protected OggPacket(OggPage parent, byte[] data, boolean bos, boolean eos, boolean spanning) {
         super(data);
         this.parent = parent;
         this.bos = bos;
         this.eos = eos;
+        this.spanning = spanning;
+    }
+    
+    protected OggPacket(OggPage parent, byte[] data, boolean bos, boolean eos) {
+        this(parent,data,bos,eos,false);
     }
     /**
      * Creates a new Ogg Packet filled with data to
@@ -52,7 +58,9 @@ public class OggPacket extends OggPacketData {
     protected void setIsEOS() {
         this.eos = true;
     }
-
+    public boolean isSpanning() {
+        return this.spanning;
+    }
     /** Unit tests only! */
     protected OggPage _getParent() {
         return parent;

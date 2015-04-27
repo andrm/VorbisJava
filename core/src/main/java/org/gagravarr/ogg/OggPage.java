@@ -339,6 +339,7 @@ public class OggPage {
 
         public OggPacketData next() {
             boolean continues = false;
+            boolean isContinued = false;
             int packetLVs = 0;
             int packetSize = 0;
 
@@ -369,7 +370,7 @@ public class OggPage {
                 byte[] fpd = new byte[prevSize+pd.length];
                 System.arraycopy(prevPart.getData(), 0, fpd, 0, prevSize);
                 System.arraycopy(pd, 0, fpd, prevSize, pd.length);
-
+                isContinued = true;
                 prevPart = null;
                 pd = fpd;
             }
@@ -388,7 +389,7 @@ public class OggPage {
                     packetEOS = true;
                 }
 
-                packet = new OggPacket(OggPage.this, pd, packetBOS, packetEOS);
+                packet = new OggPacket(OggPage.this, pd, packetBOS, packetEOS,isContinued);
             }
 
             // Wind on
