@@ -21,7 +21,6 @@ public class OggPacketReader {
     private InputStream inp;
     private Iterator<OggPacketData> it;
     private OggPacket nextPacket;
-    private int packetCount = 0;
     public OggPacketReader(InputStream inp) {
         this.inp = inp;
     }
@@ -51,7 +50,6 @@ public class OggPacketReader {
         if(it != null && it.hasNext()) {
             OggPacketData packet = it.next();
             if(packet instanceof OggPacket) {
-                packetCount++;
                 return (OggPacket)packet;
             }
             leftOver = packet;
@@ -113,6 +111,7 @@ public class OggPacketReader {
             System.err.println("Warning - had to skip " + searched + " bytes of junk data before finding the next packet header");
         }
 
+        
         // Create the page, and prime the iterator on it
         OggPage page = new OggPage(inp);
         if(!page.isChecksumValid()) {
@@ -121,17 +120,6 @@ public class OggPacketReader {
                                Integer.toHexString(page.getSid()) + " (" +
                                page.getSid() + ")");
         }
-        packetCount++;
-        boolean isCont = false;
-        if (leftOver != null) {
-            byte[] b = leftOver.getData();
-            if (b != null && b.length > 0) {
-                isCont = true;
-            }
-            
-        }
-      
-        //System.err.println("Next page:"+page.getSequenceNumber()+" gp:"+page.getGranulePosition()+ " packetCount:"+packetCount+ " isCont:"+isCont);
         it = page.getPacketIterator(leftOver);
         
         

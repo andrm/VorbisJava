@@ -24,8 +24,6 @@ public class OggPacketWriter implements Closeable {
     private int sid;
     private int sequenceNumber;
     private long currentGranulePosition = 0;
-    private long lastGranulePosition = 0;
-    private int currentWriteSize = 0;
     
     private ArrayList<OggPage> buffer =
             new ArrayList<OggPage>();
@@ -45,7 +43,6 @@ public class OggPacketWriter implements Closeable {
      *  just before or just after this call. 
      */
     public void setGranulePosition(long position) {
-        lastGranulePosition = currentGranulePosition;
         currentGranulePosition = position;
         //for(OggPage p : buffer) {
         //    p.setGranulePosition(position);
@@ -93,11 +90,8 @@ public class OggPacketWriter implements Closeable {
         int pos = 0;
         while( pos < size || emptyPacket) {
             pos = page.addPacket(packet, pos);
-            currentWriteSize += pos;
             if(pos < size) {
-                System.err.println("Adding new page, last gp:"+lastGranulePosition+ " pos:"+pos+" size:"+size);
-                currentWriteSize += page.getHeader().length;
-                page.setGranulePosition(lastGranulePosition); 
+                page.setGranulePosition(currentGranulePosition); 
                 page = getCurrentPage(true);
                 page.setIsContinuation();
             }
@@ -149,7 +143,6 @@ public class OggPacketWriter implements Closeable {
             if (page.isEOS()) {
                 page.setGranulePosition(currentGranulePosition);
             }
-            currentWriteSize += page.getHeader().length;
         }
         // Write in one go
         OggPage[] pages = buffer.toArray(new OggPage[buffer.size()]); 
@@ -177,8 +170,5 @@ public class OggPacketWriter implements Closeable {
 
         closed = true;
     }
-    
-    public int getWriteSize() {
-        return currentWriteSize;
-    }
+
 }
