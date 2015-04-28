@@ -24,7 +24,7 @@ public class OggPacketWriter implements Closeable {
     private int sid;
     private int sequenceNumber;
     private long currentGranulePosition = 0;
-    
+    private long lastGranulePosition = 0;
     private ArrayList<OggPage> buffer =
             new ArrayList<OggPage>();
 
@@ -43,6 +43,7 @@ public class OggPacketWriter implements Closeable {
      *  just before or just after this call. 
      */
     public void setGranulePosition(long position) {
+        lastGranulePosition = currentGranulePosition;
         currentGranulePosition = position;
         //for(OggPage p : buffer) {
         //    p.setGranulePosition(position);
@@ -91,12 +92,13 @@ public class OggPacketWriter implements Closeable {
         while( pos < size || emptyPacket) {
             pos = page.addPacket(packet, pos);
             if(pos < size) {
-                page.setGranulePosition(currentGranulePosition); 
+                page.setGranulePosition(lastGranulePosition); 
                 page = getCurrentPage(true);
                 page.setIsContinuation();
             }
             emptyPacket = false;
         }
+        page.setGranulePosition(currentGranulePosition);
         packet.setParent(page);
     }
 
